@@ -1,0 +1,79 @@
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Soleria</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+<a class="atla" href="#icerik">İçeriğe geç</a>
+
+<header class="ust">
+    <div class="ust-ic">
+        <a class="logo" asp-page="/Index">Soleria</a>
+
+        <form class="arama" method="get" asp-page="/Ara" role="search">
+            <label class="gizli" for="arama-q">Ürün ara</label>
+            <input id="arama-q" name="q" type="search" maxlength="100" placeholder="Ürün ara" />
+            <button type="submit">Ara</button>
+        </form>
+
+        <div class="kullanici">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                var kullanici = await UserManager.GetUserAsync(User);
+                <span class="selam">Merhaba, @(kullanici?.Ad ?? "Üye")</span>
+                <form method="post" asp-page="/Hesap/Cikis" class="satir-ici">
+                    <button type="submit" class="btn btn-ikincil btn-kucuk">Çıkış Yap</button>
+                </form>
+            }
+            else
+            {
+                <a class="btn btn-ikincil btn-kucuk" asp-page="/Hesap/Giris">Giriş Yap</a>
+                <a class="btn btn-kucuk" asp-page="/Hesap/Kayit">Kayıt Ol</a>
+            }
+        </div>
+    </div>
+
+    <nav class="ana-menu" aria-label="Ana menü">
+        <div class="ana-menu-ic">
+            <div class="menu-sol">
+                <a asp-page="/Bilgi" asp-route-slug="magaza-bul">Mağaza Bul</a>
+                <a asp-page="/Bilgi" asp-route-slug="yardim">Yardım</a>
+                <a asp-page="/Bilgi" asp-route-slug="hakkimizda">Hakkımızda</a>
+                <a asp-page="/Bilgi" asp-route-slug="satis-yap">Soleria'da Satış Yap</a>
+            </div>
+            <div class="menu-sag">
+                <a asp-page="/Index">Anasayfa</a>
+                <a asp-page="/Sepet">@await Component.InvokeAsync("SepetSayisi")</a>
+                <a asp-page="/Favoriler">Favorilerim</a>
+                <a asp-page="/Bilgi" asp-route-slug="siparislerim">Siparişlerim</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="kap" id="sayfa-icerigi">
+    <aside class="yan" aria-label="Kategoriler">
+        @await Component.InvokeAsync("KategoriMenu")
+    </aside>
+    <main id="icerik" class="ana">
+        @if (TempData["Mesaj"] is string mesaj)
+        {
+            <div class="bildirim bildirim-ok" role="status">@mesaj</div>
+        }
+        @if (TempData["Hata"] is string hata)
+        {
+            <div class="bildirim bildirim-hata" role="alert">@hata</div>
+        }
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="alt">© Elif Erişik - Soleria</footer>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

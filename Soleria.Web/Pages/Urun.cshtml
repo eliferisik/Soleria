@@ -1,0 +1,97 @@
+@page "/urun/{id:int}"
+@model UrunModel
+@{
+    var urun = Model.Urun!;
+    ViewData["Title"] = urun.Ad;
+}
+
+<nav class="kirinti" aria-label="Bulunduğunuz yer">
+    <a asp-page="/Index">Anasayfa</a> ›
+    <a asp-page="/Kategori" asp-route-slug="@urun.Category!.Slug">@urun.Category!.Ad</a>
+</nav>
+
+<article class="detay">
+    <div class="detay-galeri">
+        <div class="detay-gorsel" id="ana-urun-gorseli">
+        <img src="@urun.GorselListesi.FirstOrDefault()" alt="@urun.Ad"
+             onerror="this.onerror=null;this.src='/images/placeholder.svg'" />
+        </div>
+        @if (urun.GorselListesi.Count > 1)
+        {
+            <div class="galeri-kucukler" aria-label="Ürün görselleri">
+                @foreach (var (gorsel, index) in urun.GorselListesi.Select((g, i) => (g, i)))
+                {
+                    <button type="button" class="galeri-kucuk @(index == 0 ? "aktif" : "")" data-image="@gorsel" aria-label="Ürün görseli @(index + 1)">
+                        <img src="@gorsel" alt="" loading="lazy" />
+                    </button>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="detay-bilgi">
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <form method="post" asp-page="/Favoriler" asp-page-handler="Toggle" class="detay-favori">
+                <input type="hidden" name="productId" value="@urun.Id" />
+                <input type="hidden" name="returnUrl" value="/urun/@urun.Id" />
+                <button class="favori-dugme @(Model.Favoride ? "secili" : "")" type="submit" aria-label="@(Model.Favoride ? "Favorilerimden çıkar" : "Favorilerime ekle")" aria-pressed="@(Model.Favoride ? "true" : "false")"><span aria-hidden="true">@(Model.Favoride ? "♥" : "♡")</span></button>
+            </form>
+        }
+        else
+        {
+            <a class="favori-dugme detay-favori" asp-page="/Hesap/Giris" asp-route-returnUrl="/urun/@urun.Id" aria-label="Favorilere eklemek için giriş yap"><span aria-hidden="true">♡</span></a>
+        }
+        <h1>@urun.Ad</h1>
+        <p class="fiyat fiyat-buyuk">@urun.Fiyat.Tl()</p>
+        <p>@urun.Aciklama</p>
+
+        @if (urun.OzellikListesi.Count > 0)
+        {
+            <h2>Ürün Özellikleri</h2>
+            <dl class="ozellikler">
+                @foreach (var (baslik, deger) in urun.OzellikListesi)
+                {
+                    <dt>@baslik</dt>
+                    <dd>@deger</dd>
+                }
+            </dl>
+        }
+
+        <form method="post" class="sepete-ekle" novalidate>
+            <div asp-validation-summary="ModelOnly" class="hata-kutu"></div>
+
+            <fieldset>
+                <legend>Beden seçin</legend>
+                <div class="bedenler">
+                    @foreach (var b in urun.BedenListesi)
+                    {
+                        <label class="beden">
+                            <input type="radio" asp-for="Form.Beden" id="beden-@b" value="@b" />
+                            <span>@b</span>
+                        </label>
+                    }
+                </div>
+                <span asp-validation-for="Form.Beden" class="hata"></span>
+            </fieldset>
+
+            <div class="alan">
+                <label asp-for="Form.Adet">Adet</label>
+                <input asp-for="Form.Adet" type="number" min="1" max="10" />
+                <span asp-validation-for="Form.Adet" class="hata"></span>
+            </div>
+
+            <button type="submit" class="btn">Sepete Ekle</button>
+        </form>
+    </div>
+</article>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.galeri-kucuk').forEach(button => button.addEventListener('click', () => {
+            document.querySelector('#ana-urun-gorseli img').src = button.dataset.image;
+            document.querySelectorAll('.galeri-kucuk').forEach(item => item.classList.remove('aktif'));
+            button.classList.add('aktif');
+        }));
+    </script>
+}

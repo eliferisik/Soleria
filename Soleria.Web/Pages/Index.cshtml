@@ -1,0 +1,32 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Anasayfa";
+}
+
+<div class="anasayfa-vitrin">
+    @foreach (var bolum in new[] {
+        (Baslik: "Kadın Ayakkabıları", Id: "kadin-urunler", Urunler: Model.KadinUrunler),
+        (Baslik: "Kız Çocuk Ayakkabıları", Id: "kiz-urunler", Urunler: Model.KizUrunler),
+        (Baslik: "Erkek Çocuk Ayakkabıları", Id: "erkek-cocuk-urunler", Urunler: Model.ErkekCocukUrunler),
+        (Baslik: "Erkek Ayakkabıları", Id: "erkek-urunler", Urunler: Model.ErkekUrunler)
+    })
+    {
+        <section class="vitrin-bolumu" aria-labelledby="@bolum.Id">
+            <div class="vitrin-baslik"><h1 id="@bolum.Id">@bolum.Baslik</h1><span>Kaydırarak keşfet</span></div>
+            @if (bolum.Urunler.Count == 0)
+            {
+                <p class="bos-durum">Bu bölümde ürünler yakında yer alacak.</p>
+            }
+            else
+            {
+                <div class="urun-serit" tabindex="0" aria-label="@bolum.Baslik ürünleri">
+                    @foreach (var u in bolum.Urunler)
+                    {
+                        <partial name="_UrunKarti" model="u" />
+                    }
+                </div>
+            }
+        </section>
+    }
+</div>

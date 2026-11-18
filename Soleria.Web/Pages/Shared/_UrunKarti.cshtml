@@ -1,0 +1,37 @@
+@model Product
+@inject Microsoft.AspNetCore.Identity.SignInManager<AppUser> SignInManager
+@inject Microsoft.AspNetCore.Identity.UserManager<AppUser> UserManager
+@{
+    var userId = SignInManager.IsSignedIn(User) ? UserManager.GetUserId(User) : null;
+    var fav = userId != null && AppDb.Favorites.Any(f => f.UserId == userId && f.ProductId == Model.Id);
+}
+<article class="urun">
+    @if (userId != null)
+    {
+        <form method="post" asp-page="/Favoriler" asp-page-handler="Toggle" class="favori-form">
+            <input type="hidden" name="productId" value="@Model.Id" />
+            <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+            <button class="favori-dugme @(fav ? "secili" : "")" type="submit" aria-label="@(fav ? "Favorilerimden çıkar" : "Favorilerime ekle")" aria-pressed="@(fav ? "true" : "false")"><span aria-hidden="true">@(fav ? "♥" : "♡")</span></button>
+        </form>
+    }
+    else
+    {
+        <a class="favori-dugme" asp-page="/Hesap/Giris" asp-route-returnUrl="/urun/@Model.Id" aria-label="Favorilere eklemek için giriş yap"><span aria-hidden="true">♡</span></a>
+    }
+    @{ var kartGorselleri = Model.GorselListesi; }
+    <a class="urun-gorsel" asp-page="/Urun" asp-route-id="@Model.Id" tabindex="-1" aria-hidden="true">
+        <img class="urun-gorsel-ilk" src="@Model.GorselYolu" alt="" loading="lazy"
+             onerror="this.onerror=null;this.src='/images/placeholder.svg'" />
+        @if (kartGorselleri.Count > 1)
+        {
+            <img class="urun-gorsel-ikinci" src="@kartGorselleri[1]" alt="" loading="lazy"
+                 onerror="this.onerror=null;this.src='/images/placeholder.svg'" />
+        }
+    </a>
+    <div class="urun-icerik">
+        <h3><a asp-page="/Urun" asp-route-id="@Model.Id">@Model.Ad</a></h3>
+        <p class="fiyat">@Model.Fiyat.Tl()</p>
+        <a class="btn btn-kucuk" asp-page="/Urun" asp-route-id="@Model.Id"
+           aria-label="@Model.Ad ürününü açıp sepete ekle">Sepete Ekle</a>
+    </div>
+</article>

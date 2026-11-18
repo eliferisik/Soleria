@@ -1,0 +1,27 @@
+@page "/odeme"
+@model OdemeModel
+@{
+    ViewData["Title"] = "Ödeme Hazırlık (Demo)";
+}
+
+<h1>Ödeme Hazırlık Sayfası</h1>
+
+<div class="bildirim bildirim-bilgi" role="note">
+    <strong>Demo bilgilendirmesi:</strong> Bu sitede gerçek bir ödeme entegrasyonu yoktur.
+    Kart bilgisi istenmez, ödeme alınmaz ve sipariş oluşturulmaz.
+</div>
+
+<h2>Sipariş Özeti</h2>
+<ul class="ozet-liste">
+    @foreach (var s in Model.Sepet!.Items.OrderBy(i => i.Id))
+    {
+        <li>
+            <span>@s.Product!.Ad — Beden @s.Beden × @s.Adet</span>
+            <span>@((s.Product.Fiyat * s.Adet).Tl())</span>
+        </li>
+    }
+</ul>
+<p class="sepet-toplam"><strong>Toplam: @Model.Sepet.Toplam.Tl()</strong></p>
+
+<p>Gerçek satış yapılabilmesi için bir ödeme sağlayıcısı (örneğin iyzico, PayTR) entegre edilmesi gerekir.</p>
+<a class="btn btn-ikincil" asp-page="/Sepet">Sepete dön</a>

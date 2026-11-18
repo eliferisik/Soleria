@@ -1,0 +1,51 @@
+@page "/sepet"
+@model SepetModel
+@{
+    ViewData["Title"] = "Sepetim";
+}
+
+<h1>Sepetim</h1>
+
+@if (Model.Sepet == null || Model.Sepet.Items.Count == 0)
+{
+    <div class="bos-durum">
+        <p>Sepetiniz şu anda boş.</p>
+        <a class="btn" asp-page="/Index">Alışverişe başla</a>
+    </div>
+}
+else
+{
+    <ul class="sepet-liste">
+        @foreach (var s in Model.Sepet.Items.OrderBy(i => i.Id))
+        {
+            <li class="sepet-satir">
+                <img src="@s.Product!.GorselYolu" alt="@s.Product.Ad"
+                     onerror="this.onerror=null;this.src='/images/placeholder.svg'" />
+                <div class="sepet-bilgi">
+                    <h2><a asp-page="/Urun" asp-route-id="@s.ProductId">@s.Product.Ad</a></h2>
+                    <p>Beden: <strong>@s.Beden</strong></p>
+                    <p>Birim fiyat: @s.Product.Fiyat.Tl()</p>
+
+                    <form method="post" asp-page-handler="Guncelle" class="adet-form">
+                        <input type="hidden" name="itemId" value="@s.Id" />
+                        <label for="adet-@s.Id">Adet</label>
+                        <input id="adet-@s.Id" type="number" name="adet" value="@s.Adet" min="1" max="10" required
+                               aria-label="@s.Product.Ad adetini değiştir" onchange="this.form.requestSubmit()" />
+                    </form>
+                </div>
+                <div class="sepet-sag">
+                    <p class="satir-toplam">@((s.Product.Fiyat * s.Adet).Tl())</p>
+                    <form method="post" asp-page-handler="Kaldir">
+                        <input type="hidden" name="itemId" value="@s.Id" />
+                        <button type="submit" class="btn-link" aria-label="@s.Product.Ad ürününü sepetten kaldır">Kaldır</button>
+                    </form>
+                </div>
+            </li>
+        }
+    </ul>
+
+    <div class="sepet-toplam">
+        <p>Toplam (@Model.Sepet.ToplamAdet ürün): <strong>@Model.Sepet.Toplam.Tl()</strong></p>
+        <a class="btn" asp-page="/Odeme">Ödeme adımına geç</a>
+    </div>
+}

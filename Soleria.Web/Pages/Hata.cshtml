@@ -1,0 +1,18 @@
+@page "/hata"
+@model HataModel
+@{
+    ViewData["Title"] = Model.Kod == 404 ? "Sayfa bulunamadı" : "Bir hata oluştu";
+}
+
+<h1>@ViewData["Title"]</h1>
+<div class="bos-durum">
+    @if (Model.Kod == 404)
+    {
+        <p>Aradığınız sayfa bulunamadı veya taşınmış olabilir.</p>
+    }
+    else
+    {
+        <p>İsteğiniz işlenirken beklenmeyen bir sorun oluştu. Lütfen daha sonra tekrar deneyin.</p>
+    }
+    <a class="btn" asp-page="/Index">Anasayfaya dön</a>
+</div>

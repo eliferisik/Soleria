@@ -1,0 +1,53 @@
+@page "/hesap/kayit"
+@model KayitModel
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<h1 class="ortala">Kayıt Ol</h1>
+
+<div class="form-kap">
+    <form method="post" class="form-kart" novalidate>
+        <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
+        <div asp-validation-summary="ModelOnly" class="hata-kutu" role="alert"></div>
+
+        <div class="alan">
+            <label asp-for="Girdi.Ad">Ad</label>
+            <input asp-for="Girdi.Ad" autocomplete="given-name" placeholder="Adınızı girin" required />
+            <span asp-validation-for="Girdi.Ad" class="hata"></span>
+        </div>
+
+        <div class="alan">
+            <label asp-for="Girdi.Soyad">Soyad</label>
+            <input asp-for="Girdi.Soyad" autocomplete="family-name" placeholder="Soyadınızı girin" required />
+            <span asp-validation-for="Girdi.Soyad" class="hata"></span>
+        </div>
+
+        <div class="alan">
+            <label asp-for="Girdi.Telefon">Telefon <small>(isteğe bağlı)</small></label>
+            <input asp-for="Girdi.Telefon" type="tel" autocomplete="tel" placeholder="Telefon numaranız" />
+            <span asp-validation-for="Girdi.Telefon" class="hata"></span>
+        </div>
+
+        <div class="alan">
+            <label asp-for="Girdi.Email">E-Posta</label>
+            <input asp-for="Girdi.Email" type="email" autocomplete="email" placeholder="E-posta adresiniz" required />
+            <span asp-validation-for="Girdi.Email" class="hata"></span>
+        </div>
+
+        <div class="alan">
+            <label asp-for="Girdi.Parola">Parola</label>
+            <input asp-for="Girdi.Parola" type="password" autocomplete="new-password" placeholder="En az 8 karakter, bir rakam içermeli" required />
+            <span asp-validation-for="Girdi.Parola" class="hata"></span>
+        </div>
+
+        <div class="alan">
+            <label asp-for="Girdi.ParolaTekrar">Parola Onayla</label>
+            <input asp-for="Girdi.ParolaTekrar" type="password" autocomplete="new-password" placeholder="Parolanızı tekrar girin" required />
+            <span asp-validation-for="Girdi.ParolaTekrar" class="hata"></span>
+        </div>
+
+        <button type="submit" class="btn">Kayıt Ol</button>
+        <p class="form-alt">Zaten hesabınız var mı? <a asp-page="/Hesap/Giris" asp-route-returnUrl="@Model.ReturnUrl">Giriş yapın</a></p>
+    </form>
+</div>

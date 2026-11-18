@@ -1,0 +1,34 @@
+@page "/hesap/giris"
+@model GirisModel
+@{
+    ViewData["Title"] = "Giriş Yap";
+}
+
+<h1 class="ortala">Giriş Yap</h1>
+
+<div class="form-kap">
+    <form method="post" class="form-kart" novalidate>
+        <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
+        <div asp-validation-summary="ModelOnly" class="hata-kutu" role="alert"></div>
+
+        <div class="alan">
+            <label asp-for="Girdi.Email">E-Posta</label>
+            <input asp-for="Girdi.Email" type="email" autocomplete="email" placeholder="E-posta adresiniz" required />
+            <span asp-validation-for="Girdi.Email" class="hata"></span>
+        </div>
+
+        <div class="alan">
+            <label asp-for="Girdi.Parola">Parola</label>
+            <input asp-for="Girdi.Parola" type="password" autocomplete="current-password" placeholder="Parolanız" required />
+            <span asp-validation-for="Girdi.Parola" class="hata"></span>
+        </div>
+
+        <div class="alan alan-onay">
+            <input asp-for="Girdi.BeniHatirla" />
+            <label asp-for="Girdi.BeniHatirla">Beni hatırla</label>
+        </div>
+
+        <button type="submit" class="btn">Giriş Yap</button>
+        <p class="form-alt">Hesabınız yok mu? <a asp-page="/Hesap/Kayit" asp-route-returnUrl="@Model.ReturnUrl">Kayıt olun</a></p>
+    </form>
+</div>

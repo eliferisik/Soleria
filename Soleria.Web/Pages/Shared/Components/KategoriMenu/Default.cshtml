@@ -1,0 +1,14 @@
+@model List<Category>
+<nav class="kategori-kutu" aria-label="Kategori menüsü">
+    <h2>Kategoriler</h2>
+    @foreach (var grup in Model.GroupBy(c => c.Grup))
+    {
+        <h3>@grup.Key</h3>
+        <ul>
+            @foreach (var k in grup)
+            {
+                <li><a asp-page="/Kategori" asp-route-slug="@k.Slug">@k.Ad.Substring(grup.Key.Length).Trim()</a></li>
+            }
+        </ul>
+    }
+</nav>

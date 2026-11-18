@@ -1,0 +1,25 @@
+@page "/kategori/{slug}"
+@model KategoriModel
+@{
+    ViewData["Title"] = Model.Kategori!.Ad;
+}
+
+<section aria-labelledby="baslik">
+        <h1 id="baslik">@Model.Kategori.Ad</h1>
+        @if (Model.Urunler.Count == 0)
+        {
+            <div class="bos-durum">
+                <p>Bu kategoride henüz ürün bulunmuyor.</p>
+                <a class="btn" asp-page="/Index">Anasayfaya dön</a>
+            </div>
+        }
+        else
+        {
+            <div class="urun-izgara">
+                @foreach (var u in Model.Urunler)
+                {
+                    <partial name="_UrunKarti" model="u" />
+                }
+            </div>
+        }
+</section>

@@ -1,0 +1,29 @@
+@page "/bilgi/{slug}"
+@model BilgiModel
+@{
+    ViewData["Title"] = Model.Baslik;
+}
+
+<h1>@Model.Baslik</h1>
+@if (Model.HazirIcerik && Model.Baslik == "Hakkımızda")
+{
+    <article class="bilgi-kart">
+        <p>Soleria, günlük yaşamdan özel anlara uzanan ayakkabı seçeneklerini bir araya getiren bir mağaza deneyimidir.</p>
+        <p>Kadın, çocuk ve erkek koleksiyonlarını kolayca keşfedebilmeniz; aradığınız ürünü bulup güvenle inceleyebilmeniz için buradayız.</p>
+        <p>Amacımız, sade bir alışveriş deneyimini özenle seçilmiş ürünlerle buluşturmaktır.</p>
+    </article>
+}
+else if (Model.HazirIcerik && Model.Baslik == "Yardım")
+{
+    <section class="yardim-liste">
+        <details open><summary>Ürünleri nasıl bulabilirim?</summary><p>Üst kısımdaki arama alanını veya sol taraftaki kategorileri kullanabilirsiniz.</p></details>
+        <details><summary>Ürünü sepete nasıl eklerim?</summary><p>Ürünü açın, uygun bedeni ve adedi seçin, ardından “Sepete Ekle” düğmesine basın.</p></details>
+        <details><summary>Favorilerimi nasıl kaydederim?</summary><p>Favori simgesine basın. Favorileri hesabınızda saklamak için giriş yapmanız gerekir.</p></details>
+        <details><summary>Online ödeme yapabilir miyim?</summary><p>Bu sürümde gerçek ödeme hizmeti bağlı değildir; kart bilgisi alınmaz ve ödeme tamamlanmaz.</p></details>
+        <details><summary>Başka konuda nasıl yardım alabilirim?</summary><p>Bu demo sürümünde canlı destek bulunmuyor. Mağaza sahibi iletişim bilgilerini eklediğinde bu bölüm güncellenebilir.</p></details>
+    </section>
+}
+else
+{
+    <div class="bos-durum"><p>@Model.Mesaj</p><a class="btn" asp-page="/Index">Anasayfaya dön</a></div>
+}

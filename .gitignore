@@ -1,0 +1,23 @@
+# Derleme çıktıları
+bin/
+obj/
+.vs/
+*.user
+*.suo
+
+# SQLite veritabanı (yerel geliştirme verisi)
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Gizli yerel ayarlar
+appsettings.Local.json
+secrets.json
+*.pfx
+
+# Yerel derleme, veritabanı, IDE ve özel statik referans dosyaları
+Eski-Statik-Dosyalar/
+.vscode/
+

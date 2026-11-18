@@ -1,0 +1,29 @@
+@page "/ara"
+@model AraModel
+@{
+    ViewData["Title"] = "Arama";
+}
+
+<h1>Arama Sonuçları</h1>
+
+@if (string.IsNullOrWhiteSpace(Model.Q))
+{
+    <p class="bos-durum">Aramak için bir ürün adı yazın.</p>
+}
+else if (Model.Sonuclar.Count == 0)
+{
+    <div class="bos-durum">
+        <p>“@Model.Q” için sonuç bulunamadı. Farklı bir kelime deneyebilir veya kategorilere göz atabilirsiniz.</p>
+        <a class="btn" asp-page="/Index">Anasayfaya dön</a>
+    </div>
+}
+else
+{
+    <p>“@Model.Q” için @Model.Sonuclar.Count ürün bulundu.</p>
+    <div class="urun-izgara">
+        @foreach (var u in Model.Sonuclar)
+        {
+            <partial name="_UrunKarti" model="u" />
+        }
+    </div>
+}

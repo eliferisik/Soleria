@@ -1,0 +1,19 @@
+@page "/favorilerim"
+@model Soleria.Web.Pages.FavorilerModel
+@{
+    ViewData["Title"] = "Favorilerim";
+}
+<h1>Favorilerim</h1>
+@if (Model.Urunler.Count == 0)
+{
+    <div class="bos-durum"><p>Henüz favori ürününüz yok.</p><a class="btn" asp-page="/Index">Ürünleri keşfet</a></div>
+}
+else
+{
+    <div class="urun-izgara">
+        @foreach (var urun in Model.Urunler)
+        {
+            <partial name="_UrunKarti" model="urun" />
+        }
+    </div>
+}

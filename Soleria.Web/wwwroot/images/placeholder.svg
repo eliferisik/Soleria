@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img" aria-label="Görsel yakında">
+  <rect width="400" height="500" fill="#f3eef0"/>
+  <g fill="none" stroke="#800020" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".55">
+    <path d="M110 300 C110 240 140 200 160 190 L170 230 C200 250 250 255 290 280 C310 292 310 320 290 325 L130 325 C115 325 110 315 110 300 Z"/>
+    <path d="M130 325 L130 350 L290 350 L290 325"/>
+  </g>
+  <text x="200" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#800020" opacity=".7">Görsel yakında</text>
+</svg>
